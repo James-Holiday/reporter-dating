@@ -7,66 +7,102 @@ from flask_heroku import Heroku
 app = Flask(__name__)
 heroku = Heroku(app)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = ""
+app.config["SQLALCHEMY_DATABASE_URI"] = "SQLite://localhost/5000/"
 
 CORS(app)
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
-# class Todo(db.Model):
-#   __tablename__="todos"
-#   id = db.Column(db.Integer, primary_key=True)
-#   title = db.Column(db.String(100))
-#   done = db.Column(db.Boolean)
+class Userdata(db.Model):
+  __tablename__="userdatas"
+  id = db.Column(db.Integer, primary_key=True)
+  first_name = db.Column(db.String(20))
+  last_name = db.Column(db.String(20))
+  age = db.Column(db.String(20))
+  short_description = db.Column(db.String(100))
+  sub_heading = db.Column(db.String(50))
+  headline = db.Column(db.String(50))
+  description_one = db.Column(db.String(1000))
+  description_two = db.Column(db.String(1000))
+  images = db.Column(db.PickleType)
+  social_media = db.Column(db.PickleType)
 
-#   def __init__(self, title, done):
-#     self.title = title
-#     self.done = done
+  def __init__(self, title, done):
+    self.title = title
+    self.done = done
 
-# class TodoSchema(ma.Schema):
-#   class Meta:
-#     fields = ("id", "title", "done")
+class UserdataSchema(ma.Schema):
+  class Meta:
+    fields = (
+      "id",
+      "first_name",
+      "last_name",
+      "age",
+      "short_description",
+      "sub_heading",
+      "headline",
+      "description_one",
+      "description_two",
+      "images"
+      )
 
-# todo_schema = TodoSchema()
-# todos_schema = TodoSchema(many=True)
+userdata_schema = UserdataSchema()
+userdatas_schema = UserdataSchema(many=True)
 
 
-# @app.route("/todos", methods=["GET"])
-# def get_todos():
-#   all_todos = Todo.query.all()
-#   result = todos_schema.dump(all_todos)
-#   return jsonify(result)
+@app.route("/userdatas", methods=["GET"])
+def get_userdatas():
+  all_userdatas = Userdata.query.all()
+  result = userdatas_schema.dump(all_userdatas)
+  return jsonify(result)
 
-# @app.route("/todo", methods=["POST"])
-# def add_todo():
-#   title = request.json["title"]
-#   done = request.json["done"]
+@app.route("/userdata", methods=["POST"])
+def add_userdata():
+  first_name = request.json["first_name"]
+  last_name = request.json["last_name"]
+  age = request.json["age"]
+  short_description = request.json["short_description"]
+  sub_heading = request.json["sub_heading"]
+  headline = request.json["headline"]
+  description_one = request.json["description_one"]
+  description_two = request.json["description_two"]
+  images = request.json["images"]
 
-#   new_todo = Todo(title, done)
-#   db.session.add(new_todo)
-#   db.session.commit()
+  new_userdata = Userdata(
+    first_name,
+    last_name,
+    age,
+    short_description,
+    sub_heading,
+    headline,
+    description_one,
+    description_two,
+    images
+    )
+  db.session.add(new_userdata)
+  db.session.commit()
 
-#   created_todo = Todo.query.get(new_todo.id)
-#   return todo_schema.jsonify(created_todo)
+  created_userdata = Userdata.query.get(new_userdata.id)
+  return userdata_schema.jsonify(created_userdata)
 
-# @app.route("/todo/<id>", methods=["PUT"])
-# def update_todo(id):
-#   todo = Todo.query.get(id)
+@app.route("/userdata/<id>", methods=["PUT"])
+def update_userdata(id):
+  userdata = Userdata.query.get(id)
 
-#   todo.title = request.json["title"]
-#   todo.done = request.json["done"]
+  userdata.title = request.json["title"]
+  userdata.done = request.json["done"]
 
-#   db.session.commit()
-#   return todo_schema.jsonify(todo)
+  db.session.commit()
+  return userdata_schema.jsonify(userdata)
 
-# @app.route("/todo/<id>", methods=["DELETE"])
-# def delete_todo(id):
-#   todo = Todo.query.get(id)
-#   db.session.delete(todo)
-#   db.session.commit()
+@app.route("/userdata/<id>", methods=["DELETE"])
+def delete_userdata(id):
+  userdata = Userdata.query.get(id)
+  db.session.delete(userdata)
+  db.session.commit()
 
-#   return "RECORD DELETED"
+  return "RECORD DELETED"
 
 if __name__ == "__main__":
   app.debug = True
