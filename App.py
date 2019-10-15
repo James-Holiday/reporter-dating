@@ -28,9 +28,28 @@ class Userdata(db.Model):
   images = db.Column(db.PickleType)
   social_media = db.Column(db.PickleType)
 
-  def __init__(self, title, done):
-    self.title = title
-    self.done = done
+  def __init__(
+    self,
+    first_name,
+    last_name,
+    age,
+    short_description,
+    sub_heading,
+    headline,
+    description_one,
+    description_two,
+    images,
+    social_media,
+    ):
+    self.first_name = first_name
+    self.last_name = last_name
+    self.short_description = short_description
+    self.sub_heading = sub_heading
+    self.headline = headline
+    self.description_one = description_one
+    self.description_two = description_two
+    self.images = images
+    self.social_media = social_media
 
 class UserdataSchema(ma.Schema):
   class Meta:
@@ -90,7 +109,7 @@ def add_userdata():
 def update_userdata(id):
   userdata = Userdata.query.get(id)
 
-  userdata.title = request.json["title"]
+  userdata.first_name = request.json["first_name"]
   userdata.done = request.json["done"]
 
   db.session.commit()
