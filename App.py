@@ -25,8 +25,14 @@ class Userdata(db.Model):
   headline = db.Column(db.String(50))
   description_one = db.Column(db.String(1000))
   description_two = db.Column(db.String(1000))
-  images = db.Column(db.PickleType)
-  social_media = db.Column(db.PickleType)
+  profile_image = db.Column(db.String(1000))
+  article_image = db.Column(db.String(1000))
+  body_image_one = db.Column(db.String(1000))
+  body_image_two = db.Column(db.String(1000))
+  facebook = db.Column(db.String(1000))
+  instagram = db.Column(db.String(1000))
+  twitter = db.Column(db.String(1000))
+  job_site = db.Column(db.String(1000))
 
   def __init__(
     self,
@@ -38,8 +44,14 @@ class Userdata(db.Model):
     headline,
     description_one,
     description_two,
-    images,
-    social_media,
+    profile_image,
+    article_image,
+    body_image_one,
+    body_image_two,
+    facebook,
+    instagram,
+    twitter,
+    job_site,
     ):
     self.first_name = first_name
     self.last_name = last_name
@@ -48,8 +60,14 @@ class Userdata(db.Model):
     self.headline = headline
     self.description_one = description_one
     self.description_two = description_two
-    self.images = images
-    self.social_media = social_media
+    self.profile_image = profile_image
+    self.article_image = article_image
+    self.body_image_one = body_image_one
+    self.body_image_two = body_image_two
+    self.facebook = facebook
+    self.instagram = instagram
+    self.twitter = twitter
+    self.job_site = job_site
 
 class UserdataSchema(ma.Schema):
   class Meta:
@@ -63,7 +81,14 @@ class UserdataSchema(ma.Schema):
       "headline",
       "description_one",
       "description_two",
-      "images"
+      "profile_image",
+      "article_image",
+      "body_image_one",
+      "body_image_two",
+      "facebook",
+      "instagram",
+      "twitter",
+      "job_site"
       )
 
 userdata_schema = UserdataSchema()
@@ -86,7 +111,14 @@ def add_userdata():
   headline = request.json["headline"]
   description_one = request.json["description_one"]
   description_two = request.json["description_two"]
-  images = request.json["images"]
+  profile_image = request.json["profile_image"]
+  article_image = request.json["article_image"]
+  body_image_one = request.json["body_image_one"]
+  body_image_two = request.json["body_image_two"]
+  facebook = request.json["facebook"]
+  instagram = request.json["instagram"]
+  twitter = request.json["twitter"]
+  job_site = request.json["job_site"]
 
   new_userdata = Userdata(
     first_name,
@@ -97,7 +129,14 @@ def add_userdata():
     headline,
     description_one,
     description_two,
-    images
+    profile_image,
+    article_image,
+    body_image_one,
+    body_image_two,
+    facebook,
+    instagram,
+    twitter,
+    job_site
     )
   db.session.add(new_userdata)
   db.session.commit()
@@ -108,9 +147,22 @@ def add_userdata():
 @app.route("/userdata/<id>", methods=["PUT"])
 def update_userdata(id):
   userdata = Userdata.query.get(id)
-
   userdata.first_name = request.json["first_name"]
-  userdata.done = request.json["done"]
+  userdata.last_name = request.json["last_name"]
+  userdata.age = request.json["age"]
+  userdata.short_description = request.json["short_description"]
+  userdata.sub_heading = request.json["sub_heading"]
+  userdata.headline = request.json["headline"]
+  userdata.description_one = request.json["description_one"]
+  userdata.description_two = request.json["description_two"]
+  userdata.profile_image = request.json["profile_image"]
+  userdata.article_image = request.json["article_image"]
+  userdata.body_image_one = request.json["body_image_one"]
+  userdata.body_image_two = request.json["body_image_two"]
+  userdata.facebook = request.json["facebook"]
+  userdata.instagram = request.json["instagram"]
+  userdata.twitter = request.json["twitter"]
+  userdata.job_site = request.json["job_site"]
 
   db.session.commit()
   return userdata_schema.jsonify(userdata)
