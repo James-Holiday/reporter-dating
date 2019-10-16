@@ -55,6 +55,7 @@ class Userdata(db.Model):
     ):
     self.first_name = first_name
     self.last_name = last_name
+    self.age = age
     self.short_description = short_description
     self.sub_heading = sub_heading
     self.headline = headline
@@ -174,8 +175,6 @@ def delete_userdata(id):
   db.session.commit()
 
   return "RECORD DELETED"
-
-# debug
 
 if __name__ == "__main__":
   app.debug = True
