@@ -7,7 +7,7 @@ from flask_heroku import Heroku
 app = Flask(__name__)
 heroku = Heroku(app)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://cmjwwekpxnqsyw:607e4d0f47e7120af63d4f404ba11495f256f5769939f7dc5d653bd6f8b23c0f@ec2-54-225-106-93.compute-1.amazonaws.com:5432/damach9hgc1jio"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://wqcwlwkhzurkos:cbd72acfbf19a9c8577750a94331f365659e5460c357f17ae9e781b3c8409651@ec2-23-21-160-80.compute-1.amazonaws.com:5432/df2tku9s00u1u4"
 
 CORS(app)
 
