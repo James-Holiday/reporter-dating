@@ -76,52 +76,52 @@ def get_userdatas():
   result = userdatas_schema.dump(all_userdatas)
   return jsonify(result)
 
-# @app.route("/userdata", methods=["POST"])
-# def add_userdata():
-#   first_name = request.json["first_name"]
-#   last_name = request.json["last_name"]
-#   age = request.json["age"]
-#   short_description = request.json["short_description"]
-#   sub_heading = request.json["sub_heading"]
-#   headline = request.json["headline"]
-#   description_one = request.json["description_one"]
-#   description_two = request.json["description_two"]
-#   images = request.json["images"]
+@app.route("/userdata", methods=["POST"])
+def add_userdata():
+  first_name = request.json["first_name"]
+  last_name = request.json["last_name"]
+  age = request.json["age"]
+  short_description = request.json["short_description"]
+  sub_heading = request.json["sub_heading"]
+  headline = request.json["headline"]
+  description_one = request.json["description_one"]
+  description_two = request.json["description_two"]
+  images = request.json["images"]
 
-#   new_userdata = Userdata(
-#     first_name,
-#     last_name,
-#     age,
-#     short_description,
-#     sub_heading,
-#     headline,
-#     description_one,
-#     description_two,
-#     images
-#     )
-#   db.session.add(new_userdata)
-#   db.session.commit()
+  new_userdata = Userdata(
+    first_name,
+    last_name,
+    age,
+    short_description,
+    sub_heading,
+    headline,
+    description_one,
+    description_two,
+    images
+    )
+  db.session.add(new_userdata)
+  db.session.commit()
 
-#   created_userdata = Userdata.query.get(new_userdata.id)
-#   return userdata_schema.jsonify(created_userdata)
+  created_userdata = Userdata.query.get(new_userdata.id)
+  return userdata_schema.jsonify(created_userdata)
 
-# @app.route("/userdata/<id>", methods=["PUT"])
-# def update_userdata(id):
-#   userdata = Userdata.query.get(id)
+@app.route("/userdata/<id>", methods=["PUT"])
+def update_userdata(id):
+  userdata = Userdata.query.get(id)
 
-#   userdata.first_name = request.json["first_name"]
-#   userdata.done = request.json["done"]
+  userdata.first_name = request.json["first_name"]
+  userdata.done = request.json["done"]
 
-#   db.session.commit()
-#   return userdata_schema.jsonify(userdata)
+  db.session.commit()
+  return userdata_schema.jsonify(userdata)
 
-# @app.route("/userdata/<id>", methods=["DELETE"])
-# def delete_userdata(id):
-#   userdata = Userdata.query.get(id)
-#   db.session.delete(userdata)
-#   db.session.commit()
+@app.route("/userdata/<id>", methods=["DELETE"])
+def delete_userdata(id):
+  userdata = Userdata.query.get(id)
+  db.session.delete(userdata)
+  db.session.commit()
 
-#   return "RECORD DELETED"
+  return "RECORD DELETED"
 
 if __name__ == "__main__":
   app.debug = True
