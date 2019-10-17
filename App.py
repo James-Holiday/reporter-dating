@@ -92,69 +92,6 @@ class UserdataSchema(ma.Schema):
       "job_site"
       )
 
-class Admin(db.Model):
-  __tablename__="admins"
-  id = db.Column(db.Integer, primary_key=True)
-  user_name = db.Column(db.String(20))
-  password = db.Column(db.String(20))
-
-  def __init__(
-    self,
-    user_name,
-    password
-    ):
-    self.user_name = user_name
-    self.password = password
-
-class AdminSchema(ma.Schema):
-  class Meta:
-    fields = (
-      "id",
-      "user_name",
-      "password",
-      )
-
-admin_schema = AdminSchema()
-admins_schema = AdminSchema(many=True)
-
-@app.route("/iliketurtles", methods=["GET"])
-def get_userdatas():
-  all_admins = Admin.query.all()
-  result = admins_schema.dump(all_admins)
-  return jsonify(result)
-
-@app.route("/admin", methods=["POST"])
-def add_admin():
-  user_name = request.json["user_name"]
-  password = request.json["password"]
-
-  new_admin = Admin(
-    user_name,
-    password
-    )
-  db.session.add(new_admin)
-  db.session.commit()
-
-  created_admin = Admin.query.get(new_admin.id)
-  return admin_schema.jsonify(created_admin)
-
-@app.route("/admin/<id>", methods=["PUT"])
-def update_admin(id):
-  admin = Admin.query.get(id)
-  admin.user_name = request.json["user_name"]
-  admin.password = request.json["password"]
-
-  db.session.commit()
-  return admin_schema.jsonify(admin)
-
-@app.route("/admin/<id>", methods=["DELETE"])
-def delete_admin(id):
-  admin = Admin.query.get(id)
-  db.session.delete(admin)
-  db.session.commit()
-
-  return "ADMIN DELETED"
-
 @app.route("/userdatas", methods=["GET"])
 def get_userdatas():
   all_userdatas = Userdata.query.all()
